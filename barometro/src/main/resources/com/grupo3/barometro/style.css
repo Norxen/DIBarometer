@@ -127,7 +127,7 @@
 }
 
 .list-view .cell:hover {
-    -fx-background-color: #bdc3c7;
+    -fx-background-color: #7DA3A1;
 }
 
 .list-view .cell:selected {
