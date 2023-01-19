@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package domain;
 
 import java.util.Calendar;
@@ -11,30 +8,25 @@ import javafx.collections.ObservableList;
 public class ModeloBarometro {
 
     String fecha;
-    Calendar hora;
+    String hora;
     double presion;
     double altura;
-    ObservableList lista;
+   
   
     
     public ModeloBarometro() {
     }
 
-    public ModeloBarometro(String fecha, Calendar hora, double presion, double añtura, ObservableList lista) {
+    public ModeloBarometro(String fecha, String hora, double presion, double añtura) {
         this.fecha = fecha;
         this.hora = hora;
         this.presion = presion;
         this.altura = añtura;
     }
 
-    public ObservableList getLista() {
-       
-        return lista;
-    }
+    
 
-    public void setLista(ObservableList lista) {
-        this.lista = lista;
-    }
+   
 
     public String getFecha() {
         return fecha;
@@ -44,11 +36,11 @@ public class ModeloBarometro {
         this.fecha = fecha;
     }
 
-    public Calendar getHora() {
+    public String getHora() {
         return hora;
     }
 
-    public void setHora(Calendar hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 
@@ -60,12 +52,12 @@ public class ModeloBarometro {
         this.presion = presion;
     }
 
-    public double getAñtura() {
+    public double getAltura() {
         return altura;
     }
 
-    public void setAñtura(double añtura) {
-        this.altura = añtura;
+    public void setAltura(double altura) {
+        this.altura = altura;
     }
 
 }
