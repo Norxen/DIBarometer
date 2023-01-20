@@ -58,6 +58,22 @@
     -fx-border-color: #34675C;
 }
 
+
+.progress-bar {
+    -fx-background-color: #dfe6e9;
+    -fx-border-color: #b2bec3;
+    -fx-border-width: 2px;
+    -fx-border-radius: 6px;
+    -fx-progress-color:#34675C;
+}
+.progress-bar .bar {
+    -fx-background-color: #7DA3A1;
+    -fx-control-inner-background: #34675C;
+}
+
+.progress-bar:focused {
+    -fx-border-color: #34675C;
+}
 /*estilo date picker*/
 .date-picker {
     -fx-font-size: 18px;

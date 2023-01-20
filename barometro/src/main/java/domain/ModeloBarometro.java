@@ -1,10 +1,6 @@
 
 package domain;
 
-import java.util.Calendar;
-
-import javafx.collections.ObservableList;
-
 public class ModeloBarometro {
 
     String fecha;
@@ -12,8 +8,6 @@ public class ModeloBarometro {
     double presion;
     double altura;
    
-  
-    
     public ModeloBarometro() {
     }
 
@@ -23,10 +17,6 @@ public class ModeloBarometro {
         this.presion = presion;
         this.altura = añtura;
     }
-
-    
-
-   
 
     public String getFecha() {
         return fecha;
