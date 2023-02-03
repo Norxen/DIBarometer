@@ -32,6 +32,12 @@
     -fx-text-fill: #34495e;
 
 }
+#valorAltura{
+    -fx-font-size: 50px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+    
+}
 /*estilo slider*/
 .slider {
     -fx-background-color: #dfe6e9;

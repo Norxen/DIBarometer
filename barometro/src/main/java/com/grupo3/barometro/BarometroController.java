@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -55,8 +56,11 @@ public class BarometroController implements Initializable {
     @FXML
     private Label labelAltura;
     @FXML
+    private Label valorAltura;
+    @FXML
     private ImageView image;
-
+    @FXML
+    private Button calibrar;
     @FXML
     private GridPane panel;
     @FXML
@@ -68,6 +72,8 @@ public class BarometroController implements Initializable {
     int iterations;
 
     ObservableList<String> items = FXCollections.observableArrayList();
+    @FXML
+    private Label labelAltura1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,12 +84,21 @@ public class BarometroController implements Initializable {
         //boton desactivado mientras no tengan valores los componentes
         anadir.disableProperty().bind(texPrecision.textProperty().isEqualTo("")
                 .or(hora.valueProperty().isNull()).or(fecha.valueProperty().isNull()));
+       
+        
 
         // todo desactivado hasta estar cargado el programa (barra de proceso cargada)
-        fecha.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
-        hora.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
-        texPrecision.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
-        sliderAltura.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
+        
+        
+//        fecha.disableProperty().bind(calibrar.textProperty().isNotEqualTo("Calibrar"));
+//        hora.disableProperty().bind(calibrar.textProperty().isNotEqualTo("Calibrar"));
+//        texPrecision.disableProperty().bind(calibrar.textProperty().isNotEqualTo("Calibrar"));
+          
+        calibrar.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1,0));
+        fecha.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Calibrar")));
+        hora.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Calibrar")));
+        texPrecision.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Calibrar")));
+        sliderAltura.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Confirmar")));
 
         // para quitar barra de proceso una vez cargado
         labelProgreso.visibleProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
@@ -92,15 +107,36 @@ public class BarometroController implements Initializable {
         //}
         //acutalizar el valor en labelAltura con sliderAltura, iniciamos el label en (0)
         labelAltura.setText("0");
+        valorAltura.setText("0");
         sliderAltura.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
 
                 int value = (int) sliderAltura.getValue();
                 labelAltura.setText(value + "");
+                valorAltura.setText(value + "");
             }
 
         });
+        
+        //cambiar nombre cuando es clickado
+        EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if( calibrar.getText().compareTo("Confirmar") == 0){
+                    calibrar.setText("Calibrar");
+                
+                }else{
+                     calibrar.setText("Confirmar");
+                }
+               
+                event.consume();
+            }
+            
+     
+        };
+        calibrar.setOnAction(buttonHandler);
+        
 
         textfieldNumeros(texPrecision);
 
@@ -116,8 +152,7 @@ public class BarometroController implements Initializable {
                 modelo.setAltura(sliderAltura.getValue());
                 String element = "";
                 element += "Fecha: " + modelo.getFecha() + "     "
-                        + "Hora: " + modelo.getHora() + "\n" + "Presión: " + modelo.getPresion() + "     "
-                        + "Altura: " + labelAltura.getText();
+                        + "Hora: " + modelo.getHora() + "\n" + "Presión: " + modelo.getPresion() + "     ";
 
 //                String element = "";
 //                element += "Fecha: " + fecha.getValue().format(DateTimeFormatter.ISO_DATE) + "     "
@@ -182,7 +217,7 @@ public class BarometroController implements Initializable {
                 updateProgress(iterations + 1, 10);
 
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(500);
                 } catch (InterruptedException interrupted) {
                 }
             }

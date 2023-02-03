@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-
+<?import javafx.scene.text.Font?>
 
 <GridPane fx:id="panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="1233.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo3.barometro.BarometroController">
   <columnConstraints>
@@ -95,7 +95,10 @@
             <Insets bottom="10.0" />
          </GridPane.margin>
       </GridPane>
-      <Button id="Btn" fx:id="anadir" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Añadir" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Button id="Btn" fx:id="anadir" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Añadir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="100.0" />
+         </GridPane.margin></Button>
       <GridPane prefHeight="87.0" prefWidth="617.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -117,5 +120,15 @@
             <Insets bottom="10.0" />
          </GridPane.margin>
       </GridPane>
+      <Button fx:id="calibrar" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Confirmar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="100.0" />
+         </GridPane.margin>
+      </Button>
+      <Label fx:id="valorAltura" alignment="CENTER" prefHeight="68.0" prefWidth="509.0" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <font>
+            <Font size="50.0" />
+         </font>
+      </Label>
    </children>
 </GridPane>
