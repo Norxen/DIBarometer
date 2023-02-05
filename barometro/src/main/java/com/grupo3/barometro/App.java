@@ -15,8 +15,8 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    
-    private static Scene scene;
+
+    public static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -24,10 +24,8 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);
-        
-        
-        
-        
+
+
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -41,9 +39,9 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
-        
-       
+
+
     }
 
-   
+
 }

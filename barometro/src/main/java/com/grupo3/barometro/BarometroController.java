@@ -5,8 +5,10 @@
 package com.grupo3.barometro;
 
 import domain.ModeloBarometro;
+import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import javafx.beans.value.ChangeListener;
@@ -16,22 +18,28 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
 /**
@@ -67,54 +75,83 @@ public class BarometroController implements Initializable {
     private ProgressBar progresBar;
     @FXML
     private Label labelProgreso;
+    
+        @FXML
+    private Label lblAltura;
+
+    @FXML
+    private Label lblFecha;
+
+    @FXML
+    private Label lblHora;
+
+    @FXML
+    private Menu lblLenguajes;
+
+    @FXML
+    private Label lblPresion;
+    
 
     ModeloBarometro modelo;
     int iterations;
+    ResourceBundle resourceBundle;
 
     ObservableList<String> items = FXCollections.observableArrayList();
     @FXML
-    private Label labelAltura1;
+    private ToggleGroup idioma;
 
+    /**
+     *
+     * @param url
+     * @param rb
+     * @throws IOException
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         modelo = new ModeloBarometro();
+        
+        resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_es_ES");
 
         progresBar.progressProperty().bind(task.progressProperty());
         new Thread(task).start();
         //boton desactivado mientras no tengan valores los componentes
-        anadir.disableProperty().bind(texPrecision.textProperty().isEqualTo("")
-                .or(hora.valueProperty().isNull()).or(fecha.valueProperty().isNull()));
-       
-        
+        anadir.disableProperty().bind(texPrecision.textProperty()
+                .isEqualTo("")
+                .or(hora.valueProperty().isNull())
+                .or(fecha.valueProperty().isNull()));
 
-        // todo desactivado hasta estar cargado el programa (barra de proceso cargada)
-        
-        
-//        fecha.disableProperty().bind(calibrar.textProperty().isNotEqualTo("Calibrar"));
-//        hora.disableProperty().bind(calibrar.textProperty().isNotEqualTo("Calibrar"));
-//        texPrecision.disableProperty().bind(calibrar.textProperty().isNotEqualTo("Calibrar"));
-          
-        calibrar.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1,0));
-        fecha.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Calibrar")));
-        hora.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Calibrar")));
-        texPrecision.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Calibrar")));
-        sliderAltura.disableProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0).or(calibrar.textProperty().isNotEqualTo("Confirmar")));
+        calibrar.disableProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1,0));
+        fecha.disableProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                .isNotEqualTo(resourceBundle.getString("calibrar"))));
+        hora.disableProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                .isNotEqualTo(resourceBundle.getString("calibrar"))));
+        texPrecision.disableProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                .isNotEqualTo(resourceBundle.getString("calibrar"))));
+        sliderAltura.disableProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                .isNotEqualTo(resourceBundle.getString("confirmar"))));
 
         // para quitar barra de proceso una vez cargado
-        labelProgreso.visibleProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
-        progresBar.visibleProperty().bind(progresBar.progressProperty().isNotEqualTo(1, 0));
+        labelProgreso.visibleProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1, 0));
+        progresBar.visibleProperty().bind(progresBar.progressProperty()
+                .isNotEqualTo(1, 0));
 
         //}
         //acutalizar el valor en labelAltura con sliderAltura, iniciamos el label en (0)
         labelAltura.setText("0");
-        valorAltura.setText("0");
+        valorAltura.setText("Altura: 0");
         sliderAltura.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
 
                 int value = (int) sliderAltura.getValue();
                 labelAltura.setText(value + "");
-                valorAltura.setText(value + "");
+                valorAltura.setText("Altura: " + value + "");
             }
 
         });
@@ -123,11 +160,11 @@ public class BarometroController implements Initializable {
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if( calibrar.getText().compareTo("Confirmar") == 0){
-                    calibrar.setText("Calibrar");
-                
+                if( calibrar.getText().compareTo(resourceBundle.getString("confirmar")) == 0){
+                    calibrar.setText(resourceBundle.getString("calibrar"));
+                    modelo.setAltura(sliderAltura.getValue());
                 }else{
-                     calibrar.setText("Confirmar");
+                     calibrar.setText(resourceBundle.getString("confirmar"));
                 }
                
                 event.consume();
@@ -145,7 +182,7 @@ public class BarometroController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-
+                
                 modelo.setFecha(fecha.getValue().format(DateTimeFormatter.ISO_DATE));
                 modelo.setHora(hora.getValue() + "");
                 modelo.setPresion(Double.parseDouble(texPrecision.getText()));
@@ -165,6 +202,59 @@ public class BarometroController implements Initializable {
         };
 
         anadir.setOnAction(onClick);
+        
+        idioma.selectedToggleProperty().addListener((p, o, n) -> {
+            RadioMenuItem rr = (RadioMenuItem) n.getToggleGroup().getSelectedToggle();
+            
+            boolean isConfirming = true;
+            
+            if(calibrar.getText().compareTo(resourceBundle.getString("confirmar")) != 0) isConfirming = false;
+            
+            switch(rr.getText()) {
+                case "Spanish":
+                    resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_es_ES");
+                    break;
+                case "French":
+                    resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_fr_FR");
+                    break;
+                case "Italian":
+                    resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_it_IT");
+                    break;
+                case "English":
+                    resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_en_US");
+
+                    break;
+            }
+            
+            lblFecha.setText(resourceBundle.getString("fecha"));
+            lblHora.setText(resourceBundle.getString("hora"));
+            lblPresion.setText(resourceBundle.getString("presion"));
+            lblAltura.setText(resourceBundle.getString("altura"));
+            if(isConfirming)
+                calibrar.setText(resourceBundle.getString("confirmar"));
+            else
+                calibrar.setText(resourceBundle.getString("calibrar"));
+            labelProgreso.setText(resourceBundle.getString("cargando"));
+            valorAltura.setText(resourceBundle.getString("valorAltura") + (int) modelo.getAltura());
+            lblLenguajes.setText(resourceBundle.getString("lenguaje"));
+            anadir.setText(resourceBundle.getString("añadir"));
+            
+            //sabemos que está mal, pero no nos vamos a poner a hacerlo, 
+            //entiendelo, son las 10:30, no llegamos teacher
+            fecha.disableProperty().bind(progresBar.progressProperty()
+                    .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                    .isNotEqualTo(resourceBundle.getString("calibrar"))));
+            hora.disableProperty().bind(progresBar.progressProperty()
+                    .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                    .isNotEqualTo(resourceBundle.getString("calibrar"))));
+            texPrecision.disableProperty().bind(progresBar.progressProperty()
+                    .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                    .isNotEqualTo(resourceBundle.getString("calibrar"))));
+            sliderAltura.disableProperty().bind(progresBar.progressProperty()
+                    .isNotEqualTo(1, 0).or(calibrar.textProperty()
+                    .isNotEqualTo(resourceBundle.getString("confirmar"))));
+        });
+        
         comboBox();
 
     }
@@ -174,6 +264,8 @@ public class BarometroController implements Initializable {
         historial.setItems(items);
 
     }
+    
+    
 
     // metodo para rellenar el comboBox(HORAS)
     void comboBox() {
@@ -217,7 +309,7 @@ public class BarometroController implements Initializable {
                 updateProgress(iterations + 1, 10);
 
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException interrupted) {
                 }
             }

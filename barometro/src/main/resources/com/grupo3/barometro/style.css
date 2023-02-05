@@ -207,3 +207,23 @@
 .combo-box .arrow-button .arrow {
     -fx-background-color: #34495e;
 }
+
+.menu:hover {
+    -fx-background-color:#7DA3A1;
+}
+
+.menu:focused {
+    -fx-background-color:#7DA3A1;
+}
+
+.menu:showing{
+    -fx-background-color:#34675C;
+}
+
+.menu-item:hover {
+    -fx-background-color:#7DA3A1;
+}
+
+.menu-item:focused {
+    -fx-background-color:#7DA3A1;
+}

@@ -6,9 +6,13 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,23 +20,25 @@
 <?import javafx.scene.text.Font?>
 
 <GridPane fx:id="panel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="1233.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo3.barometro.BarometroController">
-  <columnConstraints>
+    
+    <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
+    <RowConstraints />
     <RowConstraints maxHeight="415.0" minHeight="0.0" prefHeight="415.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="400.0" minHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="329.0" minHeight="0.0" prefHeight="96.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="329.0" minHeight="0.0" prefHeight="96.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="242.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ListView id="Historico" fx:id="historial" prefHeight="240.0" prefWidth="611.0">
+      <ListView id="Historico" fx:id="historial" prefHeight="240.0" prefWidth="611.0" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </ListView>
-      <GridPane prefHeight="68.0" prefWidth="617.0" GridPane.rowIndex="1">
+      <GridPane prefHeight="68.0" prefWidth="617.0" GridPane.rowIndex="2">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -42,17 +48,17 @@
           <RowConstraints maxHeight="94.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Fecha" GridPane.halignment="CENTER" />
+            <Label fx:id="lblFecha" text="Fecha" GridPane.halignment="CENTER" />
             <DatePicker id="Fecha" fx:id="fecha" editable="false" prefHeight="25.0" prefWidth="344.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="30.0" right="30.0" />
                </GridPane.margin>
             </DatePicker>
-            <Label text="Hora" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Label fx:id="lblHora" text="Hora" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <ComboBox fx:id="hora" prefHeight="31.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <GridPane GridPane.rowIndex="2">
+      <GridPane GridPane.rowIndex="3">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -61,7 +67,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Presión" GridPane.halignment="CENTER" />
+            <Label fx:id="lblPresion" text="Presion" GridPane.halignment="CENTER" />
             <TextField id="Presion" fx:id="texPrecision" prefHeight="44.0" prefWidth="503.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="100.0" right="100.0" />
@@ -69,8 +75,8 @@
             </TextField>
          </children>
       </GridPane>
-      <ImageView id="Imagen" fx:id="image" fitHeight="273.0" fitWidth="286.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-      <GridPane prefHeight="87.0" prefWidth="617.0" GridPane.rowIndex="3">
+      <ImageView id="Imagen" fx:id="image" fitHeight="273.0" fitWidth="286.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <GridPane prefHeight="87.0" prefWidth="617.0" GridPane.rowIndex="4">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -84,7 +90,7 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Slider>
-            <Label text="Altura" GridPane.halignment="CENTER" />
+            <Label fx:id="lblAltura" text="Altura" GridPane.halignment="CENTER" />
             <Label id="IndicadorAltura" fx:id="labelAltura" prefHeight="17.0" prefWidth="60.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="20.0" />
@@ -95,11 +101,11 @@
             <Insets bottom="10.0" />
          </GridPane.margin>
       </GridPane>
-      <Button id="Btn" fx:id="anadir" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Añadir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+      <Button id="Btn" fx:id="anadir" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Añadir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="100.0" />
          </GridPane.margin></Button>
-      <GridPane prefHeight="87.0" prefWidth="617.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <GridPane prefHeight="87.0" prefWidth="617.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
@@ -109,26 +115,37 @@
          </rowConstraints>
          <children>
             <Label fx:id="labelProgreso" text="Cargando..." GridPane.halignment="CENTER" />
-            <Label id="IndicadorAltura" fx:id="labelAltura1" prefHeight="17.0" prefWidth="60.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Label>
             <ProgressBar fx:id="progresBar" prefHeight="25.0" prefWidth="495.0" progress="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
          </children>
          <GridPane.margin>
             <Insets bottom="10.0" />
          </GridPane.margin>
       </GridPane>
-      <Button fx:id="calibrar" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Confirmar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+      <Button fx:id="calibrar" mnemonicParsing="false" prefHeight="65.0" prefWidth="128.0" text="Confirmar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="100.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="valorAltura" alignment="CENTER" prefHeight="68.0" prefWidth="509.0" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <Label fx:id="valorAltura" alignment="CENTER" prefHeight="68.0" prefWidth="509.0" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
             <Font size="50.0" />
          </font>
       </Label>
+      <MenuBar GridPane.columnSpan="2">
+         <menus>
+            <Menu fx:id="lblLenguajes" mnemonicParsing="false" text="Lenguajes">
+               <items>
+                  <RadioMenuItem mnemonicParsing="false" selected="true" text="Spanish">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="idioma" />
+                     </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem mnemonicParsing="false" text="French" toggleGroup="$idioma" />
+                  <RadioMenuItem mnemonicParsing="false" text="Italian" toggleGroup="$idioma" />
+                  <RadioMenuItem mnemonicParsing="false" text="English" toggleGroup="$idioma" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
    </children>
 </GridPane>
