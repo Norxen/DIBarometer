@@ -4,6 +4,7 @@
  */
 package com.grupo3.barometro;
 
+import domain.HistoricalValue;
 import domain.ModeloBarometro;
 import java.io.IOException;
 import java.net.URL;
@@ -38,6 +39,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.converter.IntegerStringConverter;
@@ -75,8 +77,8 @@ public class BarometroController implements Initializable {
     private ProgressBar progresBar;
     @FXML
     private Label labelProgreso;
-    
-        @FXML
+
+    @FXML
     private Label lblAltura;
 
     @FXML
@@ -90,13 +92,14 @@ public class BarometroController implements Initializable {
 
     @FXML
     private Label lblPresion;
-    
-
     ModeloBarometro modelo;
     int iterations;
     ResourceBundle resourceBundle;
 
+    
+
     ObservableList<String> items = FXCollections.observableArrayList();
+
     @FXML
     private ToggleGroup idioma;
 
@@ -108,8 +111,8 @@ public class BarometroController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+       
         modelo = new ModeloBarometro();
-        
         resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_es_ES");
 
         progresBar.progressProperty().bind(task.progressProperty());
@@ -121,7 +124,7 @@ public class BarometroController implements Initializable {
                 .or(fecha.valueProperty().isNull()));
 
         calibrar.disableProperty().bind(progresBar.progressProperty()
-                .isNotEqualTo(1,0));
+                .isNotEqualTo(1, 0));
         fecha.disableProperty().bind(progresBar.progressProperty()
                 .isNotEqualTo(1, 0).or(calibrar.textProperty()
                 .isNotEqualTo(resourceBundle.getString("calibrar"))));
@@ -155,62 +158,81 @@ public class BarometroController implements Initializable {
             }
 
         });
-        
+
         //cambiar nombre cuando es clickado
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if( calibrar.getText().compareTo(resourceBundle.getString("confirmar")) == 0){
+                if (calibrar.getText().compareTo(resourceBundle.getString("confirmar")) == 0) {
                     calibrar.setText(resourceBundle.getString("calibrar"));
                     modelo.setAltura(sliderAltura.getValue());
-                }else{
-                     calibrar.setText(resourceBundle.getString("confirmar"));
+                } else {
+                    calibrar.setText(resourceBundle.getString("confirmar"));
                 }
-               
+
                 event.consume();
             }
-            
-     
+
         };
         calibrar.setOnAction(buttonHandler);
-        
 
         textfieldNumeros(texPrecision);
-
+        
+      
         // boton para añadir
         EventHandler<ActionEvent> onClick = new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                
+
                 modelo.setFecha(fecha.getValue().format(DateTimeFormatter.ISO_DATE));
                 modelo.setHora(hora.getValue() + "");
                 modelo.setPresion(Double.parseDouble(texPrecision.getText()));
                 modelo.setAltura(sliderAltura.getValue());
-                String element = "";
-                element += "Fecha: " + modelo.getFecha() + "     "
-                        + "Hora: " + modelo.getHora() + "\n" + "Presión: " + modelo.getPresion() + "     ";
+                
+                ObservableList<String> items = FXCollections.observableArrayList();
+                modelo.addValueToList();
+                for (String item : modelo.getHistoricalValues()) {
+                    items.add(item);
+                    
+                }
+                
+                historial.setItems(items);
+                System.out.println(modelo.getHv().size());
+                if(modelo.getHv().size() >= 2){  
+                 //predecirClima(modelo.getFecha(), modelo.getHora(), modelo.getHv().get(0).getPressure(), modelo.getAltura(),modelo.getHv().get(1).getPressure());
+                }else{
+               
+                    image.setImage(new Image(getClass().getResourceAsStream("error404.png")));
+                
+                }
+                    
+                
+               
 
+                
 //                String element = "";
-//                element += "Fecha: " + fecha.getValue().format(DateTimeFormatter.ISO_DATE) + "     "
-//                        + "Hora: "  + hora.getValue() + "\n" + "Presión: " + texPrecision.getText() + "     "
-//                        + "Altura: " + labelAltura.getText();
-                addElement(element);
+//                element += "Fecha: " + modelo.getFecha() + "     "
+//                        + "Hora: " + modelo.getHora() + "\n" + "Presión: " + modelo.getPresion() + "     ";
+//
+//                addElement(element);
                 event.consume();
 
             }
         };
 
         anadir.setOnAction(onClick);
-        
+
         idioma.selectedToggleProperty().addListener((p, o, n) -> {
             RadioMenuItem rr = (RadioMenuItem) n.getToggleGroup().getSelectedToggle();
-            
+
             boolean isConfirming = true;
-            
-            if(calibrar.getText().compareTo(resourceBundle.getString("confirmar")) != 0) isConfirming = false;
-            
-            switch(rr.getText()) {
+
+            if (calibrar.getText().compareTo(resourceBundle.getString("confirmar")) != 0) {
+                isConfirming = false;
+            }
+
+            switch (rr.getText()) {
                 case "Spanish":
                     resourceBundle = ResourceBundle.getBundle("com.grupo3.barometro.i18n_es_ES");
                     break;
@@ -225,20 +247,21 @@ public class BarometroController implements Initializable {
 
                     break;
             }
-            
+
             lblFecha.setText(resourceBundle.getString("fecha"));
             lblHora.setText(resourceBundle.getString("hora"));
             lblPresion.setText(resourceBundle.getString("presion"));
             lblAltura.setText(resourceBundle.getString("altura"));
-            if(isConfirming)
+            if (isConfirming) {
                 calibrar.setText(resourceBundle.getString("confirmar"));
-            else
+            } else {
                 calibrar.setText(resourceBundle.getString("calibrar"));
+            }
             labelProgreso.setText(resourceBundle.getString("cargando"));
             valorAltura.setText(resourceBundle.getString("valorAltura") + (int) modelo.getAltura());
             lblLenguajes.setText(resourceBundle.getString("lenguaje"));
             anadir.setText(resourceBundle.getString("añadir"));
-            
+
             //sabemos que está mal, pero no nos vamos a poner a hacerlo, 
             //entiendelo, son las 10:30, no llegamos teacher
             fecha.disableProperty().bind(progresBar.progressProperty()
@@ -254,18 +277,17 @@ public class BarometroController implements Initializable {
                     .isNotEqualTo(1, 0).or(calibrar.textProperty()
                     .isNotEqualTo(resourceBundle.getString("confirmar"))));
         });
-        
+
         comboBox();
 
     }
-
+    
     void addElement(String element) {
+        
         items.add(element);
         historial.setItems(items);
 
     }
-    
-    
 
     // metodo para rellenar el comboBox(HORAS)
     void comboBox() {
@@ -309,7 +331,7 @@ public class BarometroController implements Initializable {
                 updateProgress(iterations + 1, 10);
 
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(500);
                 } catch (InterruptedException interrupted) {
                 }
             }
@@ -317,4 +339,33 @@ public class BarometroController implements Initializable {
         }
     };
 
+//    public void predecirClima(String fecha, String hora, double presion, double altura ,double presionAnterior) {
+//        
+//        double cambioPresion = presion - presionAnterior;
+//
+//        // Cálculo del cambio de presión y predicción del clima
+//        
+//        if (cambioPresion < 0 && Math.abs(cambioPresion) <= 6.0 / 24.0) {
+//            
+//            // Devuelve una imagen correspondiente al resultado de la predicción
+//            image.setImage(new Image(getClass().getResourceAsStream("sol.png")));
+//            
+//        } else if (cambioPresion < 0 && Math.abs(cambioPresion) > 6.0 / 24.0) {
+//            
+//            // Devuelve una imagen correspondiente al resultado de la predicción
+//            image.setImage( new Image(getClass().getResourceAsStream("Rain.png")));
+//            
+//        } else if (cambioPresion > 0 && cambioPresion <= 6.0 / 24.0) {
+//            
+//            // Devuelve una imagen correspondiente al resultado de la predicción
+//            image.setImage(new Image(getClass().getResourceAsStream("cloud.png")));
+//            
+//        } else if (cambioPresion > 0 && cambioPresion > 6.0 / 24.0) {
+//            
+//            // Devuelve una imagen correspondiente al resultado de la predicción
+//            image.setImage(new Image(getClass().getResourceAsStream("couldhappy.png")));
+//        }
+//    }
 }
+ 
+       

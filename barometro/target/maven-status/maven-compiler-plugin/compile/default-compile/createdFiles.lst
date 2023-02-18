@@ -1,4 +1,9 @@
+com\grupo3\barometro\BarometroController$4.class
 com\grupo3\barometro\BarometroController.class
+domain\ModeloBarometro.class
+domain\HistoricalValue.class
+com\grupo3\barometro\BarometroController$2.class
+com\grupo3\barometro\BarometroController$3.class
 com\grupo3\barometro\BarometroController$1.class
 module-info.class
 com\grupo3\barometro\App.class
