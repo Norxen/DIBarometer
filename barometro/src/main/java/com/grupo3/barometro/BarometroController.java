@@ -96,8 +96,6 @@ public class BarometroController implements Initializable {
     int iterations;
     ResourceBundle resourceBundle;
 
-    
-
     ObservableList<String> items = FXCollections.observableArrayList();
 
     @FXML
@@ -199,23 +197,25 @@ public class BarometroController implements Initializable {
                 
                 historial.setItems(items);
                 System.out.println(modelo.getHv().size());
-                if(modelo.getHv().size() >= 2){  
-                 //predecirClima(modelo.getFecha(), modelo.getHora(), modelo.getHv().get(0).getPressure(), modelo.getAltura(),modelo.getHv().get(1).getPressure());
-                }else{
-               
-                    image.setImage(new Image(getClass().getResourceAsStream("error404.png")));
                 
+                switch(modelo.actualizar()){
+                    case 0:
+                        image.setImage(new Image(getClass().getResourceAsStream("sol.png")));
+                        break;
+                    case 1:
+                        image.setImage( new Image(getClass().getResourceAsStream("Rain.png")));
+                        break;
+                    case 2:
+                        image.setImage(new Image(getClass().getResourceAsStream("cloud.png")));
+                        break;
+                    case 3:
+                        image.setImage(new Image(getClass().getResourceAsStream("couldhappy.png")));
+                        break;
+                    default:
+                        image.setImage(new Image(getClass().getResourceAsStream("error404.png")));
+                        break;
                 }
-                    
                 
-               
-
-                
-//                String element = "";
-//                element += "Fecha: " + modelo.getFecha() + "     "
-//                        + "Hora: " + modelo.getHora() + "\n" + "Presión: " + modelo.getPresion() + "     ";
-//
-//                addElement(element);
                 event.consume();
 
             }
@@ -293,7 +293,7 @@ public class BarometroController implements Initializable {
     void comboBox() {
         ObservableList<String> items = FXCollections.observableArrayList();
 
-        items.addAll("00.00", "01:00", "02:00", "03:00",
+        items.addAll("00:00", "01:00", "02:00", "03:00",
                 "04:00", "05:00", "06:00", "07:00",
                 "08:00", "09:00", "10:00", "11:00",
                 "12:00", "13:00", "14:00", "15:00",
@@ -339,33 +339,6 @@ public class BarometroController implements Initializable {
         }
     };
 
-//    public void predecirClima(String fecha, String hora, double presion, double altura ,double presionAnterior) {
-//        
-//        double cambioPresion = presion - presionAnterior;
-//
-//        // Cálculo del cambio de presión y predicción del clima
-//        
-//        if (cambioPresion < 0 && Math.abs(cambioPresion) <= 6.0 / 24.0) {
-//            
-//            // Devuelve una imagen correspondiente al resultado de la predicción
-//            image.setImage(new Image(getClass().getResourceAsStream("sol.png")));
-//            
-//        } else if (cambioPresion < 0 && Math.abs(cambioPresion) > 6.0 / 24.0) {
-//            
-//            // Devuelve una imagen correspondiente al resultado de la predicción
-//            image.setImage( new Image(getClass().getResourceAsStream("Rain.png")));
-//            
-//        } else if (cambioPresion > 0 && cambioPresion <= 6.0 / 24.0) {
-//            
-//            // Devuelve una imagen correspondiente al resultado de la predicción
-//            image.setImage(new Image(getClass().getResourceAsStream("cloud.png")));
-//            
-//        } else if (cambioPresion > 0 && cambioPresion > 6.0 / 24.0) {
-//            
-//            // Devuelve una imagen correspondiente al resultado de la predicción
-//            image.setImage(new Image(getClass().getResourceAsStream("couldhappy.png")));
-//        }
-//    }
 }
  
        

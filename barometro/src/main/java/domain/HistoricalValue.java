@@ -47,7 +47,7 @@ public class HistoricalValue implements Comparable<HistoricalValue> {
     @Override
     public int compareTo(HistoricalValue o) {
         if(date.compareTo(o.date) != 0) {
-            return date.compareTo(o.date);
+            return -1 * date.compareTo(o.date);
         }
         
         return hour.compareTo(o.hour);

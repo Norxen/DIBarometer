@@ -1,8 +1,12 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class ModeloBarometro {
 
@@ -88,6 +92,59 @@ public class ModeloBarometro {
 
     public List<HistoricalValue> getHv (){
      return listaDeDatos;
+    }
+    
+    /**
+     * 0 = Sol
+     * 1 = Lluvia
+     * 2 = Nube Feliz
+     * 3 = Nube Enfadada
+     * @return 
+     */
+    public int actualizar() {
+        if(listaDeDatos.size() < 2) return -1;
+        HistoricalValue a = listaDeDatos.get(0);
+        HistoricalValue b = listaDeDatos.get(1);
+        
+        if(isPreviousHour(b.getHour(), a.getHour())){
+            System.out.println(b.getPressure() - a.getPressure());
+            if(b.getPressure() - a.getPressure() >= 1) return 1;
+            else if(b.getPressure() - a.getPressure() <= -1) return 0;
+        }
+        
+        long encontrado = 0;
+        int i;
+        int index = 0;
+        for(i = 0; i < listaDeDatos.size() && encontrado <= 0; i++){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date1 = LocalDate.parse(a.getDate(), formatter);
+            LocalDate date2 = LocalDate.parse(listaDeDatos.get(i).getDate(), formatter);
+
+            long daysBetween = ChronoUnit.DAYS.between(date1, date2);
+            System.out.println(daysBetween);
+            if(Math.abs(daysBetween) > 0) {
+                index = i;
+                encontrado = Math.abs(daysBetween);
+            }
+        }
+        
+        if(encontrado == 1){
+            b = listaDeDatos.get(index);
+            if(b.getPressure() - a.getPressure() >= 6) return 2;
+            else if(b.getPressure() - a.getPressure() <= -6) return 3;
+        }
+        
+        
+        return -1;
+    }
+    
+    private boolean isPreviousHour(String a, String b) {
+        // Parse the strings into LocalTime objects
+        LocalTime localTime1 = LocalTime.parse(a, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime localTime2 = LocalTime.parse(b, DateTimeFormatter.ofPattern("HH:mm"));
+
+        // Check if localTime1 is one hour greater than localTime2
+        return localTime1.getHour() == localTime2.getHour() + 1;
     }
     
 }
