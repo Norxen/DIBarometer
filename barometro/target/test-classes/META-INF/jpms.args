@@ -1,0 +1,4 @@
+--patch-module
+com.grupo3.barometro=_
+--add-reads
+com.grupo3.barometro=ALL-UNNAMED

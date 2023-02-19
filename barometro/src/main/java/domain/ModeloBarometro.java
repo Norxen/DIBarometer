@@ -102,22 +102,63 @@ public class ModeloBarometro {
      * @return 
      */
     public int actualizar() {
-        if(listaDeDatos.size() < 2) return -1;
+        int result = 0;
+        //1
+        if(listaDeDatos.size() < 2) {
+            //F
+            return -1;
+        }
+        
+        //3
         HistoricalValue a = listaDeDatos.get(0);
         HistoricalValue b = listaDeDatos.get(1);
         
+        //4
         if(isPreviousHour(b.getHour(), a.getHour())){
             System.out.println(b.getPressure() - a.getPressure());
-            if(b.getPressure() - a.getPressure() >= 1) return 1;
-            else if(b.getPressure() - a.getPressure() <= -1) return 0;
+            //4.a
+            if(b.getPressure() - a.getPressure() > 1) 
+                result = 1;
+            //4.b
+            else if(b.getPressure() - a.getPressure() < -1) 
+                result = 0;
+            //4.c
+            else 
+                result = 4;
+        }//5
+        else if(isPreviousDay(a.getDate())) {
+            //5.a
+            if(b.getPressure() - a.getPressure() >= 6) 
+                result = 2;
+            //5.b
+            else if(b.getPressure() - a.getPressure() <= -6) 
+                result = 3;
+            //5.c
+            else 
+                result = 4;
         }
-        
+        //F
+        return result;
+    }
+    
+    public boolean isPreviousHour(String a, String b) {
+        // Parse the strings into LocalTime objects
+        LocalTime localTime1 = LocalTime.parse(a, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime localTime2 = LocalTime.parse(b, DateTimeFormatter.ofPattern("HH:mm"));
+
+        // Check if localTime1 is one hour greater than localTime2
+        return localTime1.getHour() == localTime2.getHour() + 1;
+    }
+    
+    public boolean isPreviousDay(String a) {
+        //5
         long encontrado = 0;
         int i;
         int index = 0;
+        //6
         for(i = 0; i < listaDeDatos.size() && encontrado <= 0; i++){
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate date1 = LocalDate.parse(a.getDate(), formatter);
+            LocalDate date1 = LocalDate.parse(a, formatter);
             LocalDate date2 = LocalDate.parse(listaDeDatos.get(i).getDate(), formatter);
 
             long daysBetween = ChronoUnit.DAYS.between(date1, date2);
@@ -128,23 +169,32 @@ public class ModeloBarometro {
             }
         }
         
-        if(encontrado == 1){
-            b = listaDeDatos.get(index);
-            if(b.getPressure() - a.getPressure() >= 6) return 2;
-            else if(b.getPressure() - a.getPressure() <= -6) return 3;
-        }
-        
-        
-        return -1;
+        return encontrado == 1;
     }
     
-    private boolean isPreviousHour(String a, String b) {
-        // Parse the strings into LocalTime objects
-        LocalTime localTime1 = LocalTime.parse(a, DateTimeFormatter.ofPattern("HH:mm"));
-        LocalTime localTime2 = LocalTime.parse(b, DateTimeFormatter.ofPattern("HH:mm"));
-
-        // Check if localTime1 is one hour greater than localTime2
-        return localTime1.getHour() == localTime2.getHour() + 1;
+    /**
+     * Metodo falseado unicamente para hacer la caja negra, no funciona con la logica de nuestra aplicacion
+     * 
+     * 0 = Se mantiene
+     * 1 = Lluvia
+     * 2 = Mejora Pasajera
+     * 3 = Anticiclon
+     * 4 = borrasca pasa lejos
+     * 
+     * @param pdHour
+     * @param pdDay
+     * @return 
+     */
+    
+    public int calcularClima(double pdHour, double pdDay) {
+        int value = 0;
+        
+        if(pdHour < -1) value = 1;
+        else if(pdHour > 1) value = 2;
+        else if(pdDay > 6) value = 3;
+        else if(pdDay < -6) value = 4;
+        
+        return value;
     }
     
 }

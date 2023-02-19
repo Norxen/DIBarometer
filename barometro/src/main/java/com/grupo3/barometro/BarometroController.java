@@ -211,6 +211,9 @@ public class BarometroController implements Initializable {
                     case 3:
                         image.setImage(new Image(getClass().getResourceAsStream("couldhappy.png")));
                         break;
+                    case 4:
+                        image.setImage(new Image(getClass().getResourceAsStream("despejado.png")));
+                        break;
                     default:
                         image.setImage(new Image(getClass().getResourceAsStream("error404.png")));
                         break;
