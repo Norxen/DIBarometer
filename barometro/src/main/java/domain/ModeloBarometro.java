@@ -103,13 +103,13 @@ public class ModeloBarometro {
      */
     public int actualizar() {
         int result = 0;
-        HistoricalValue a = listaDeDatos.get(0);
-        HistoricalValue b = listaDeDatos.get(1);
+        
 
         if(listaDeDatos.size() < 2) {
             return -1;
         }
-        
+        HistoricalValue a = listaDeDatos.get(0);
+        HistoricalValue b = listaDeDatos.get(1);
         if(!isPreviousHour(b.getHour(), a.getHour()))
         {
             result = calcularClima(b.getPressure()-a.getPressure(), 0);
@@ -141,7 +141,7 @@ public class ModeloBarometro {
             LocalDate date2 = LocalDate.parse(listaDeDatos.get(i).getDate(), formatter);
 
             long daysBetween = ChronoUnit.DAYS.between(date1, date2);
-            System.out.println(daysBetween);
+           
             if(Math.abs(daysBetween) > 0) {
                 index = i;
                 encontrado = Math.abs(daysBetween);
@@ -151,19 +151,7 @@ public class ModeloBarometro {
         return encontrado == 1;
     }
     
-    /**
-     * Metodo falseado unicamente para hacer la caja negra, no funciona con la logica de nuestra aplicacion
-     * 
-     * 0 = Se mantiene
-     * 1 = Lluvia
-     * 2 = Mejora Pasajera
-     * 3 = Anticiclon
-     * 4 = borrasca pasa lejos
-     * 
-     * @param pdHour
-     * @param pdDay
-     * @return 
-     */
+    
     
     public int calcularClima(double pdHour, double pdDay) {
         int value = 4;

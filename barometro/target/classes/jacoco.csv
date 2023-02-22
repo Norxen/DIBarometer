@@ -1,0 +1,10 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+barometro,domain,HistoricalValue,105,0,10,0,28,0,16,0,11,0
+barometro,domain,ModeloBarometro,243,39,20,8,60,9,25,6,15,2
+barometro,com.grupo3.barometro,App,41,0,0,0,12,0,5,0,5,0
+barometro,com.grupo3.barometro,BarometroController.new Task() {...},43,0,2,0,8,0,3,0,2,0
+barometro,com.grupo3.barometro,BarometroController.new EventHandler() {...},152,0,8,0,25,0,8,0,2,0
+barometro,com.grupo3.barometro,BarometroController.new EventHandler() {...},47,0,2,0,7,0,3,0,2,0
+barometro,com.grupo3.barometro,BarometroController.new ChangeListener() {...},25,0,0,0,5,0,2,0,2,0
+barometro,com.grupo3.barometro,BarometroController,558,0,11,0,92,0,14,0,7,0
+barometro,com.grupo3.barometro,NewMain,6,0,0,0,3,0,2,0,2,0

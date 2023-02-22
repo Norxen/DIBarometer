@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.grupo3</groupId>
     <artifactId>barometro</artifactId>
@@ -55,13 +55,59 @@
             <version>13</version>
             <type>jar</type>
         </dependency>
+        
+        
+        
+
     </dependencies>
     <build>
         <plugins>
+        
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                     <name>MiApp</name>
+                     <appVersion>1.0.0</appVersion>
+                     <vendor>com.grupo3.barometro</vendor>
+                     <destination>target/dist</destination>
+                     <module>com.grupo3.barometro/com.grupo3.barometro.NewMain
+                     </module>
+                     <runtimeImage>target/MiApp</runtimeImage>
+                     <resourceDir>src/main/jpackager</resourceDir>
+                </configuration>
+           </plugin>
+
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                           
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/../src/main/resources</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -81,6 +127,20 @@
                 </executions>
             </plugin>
             
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <compress>2</compress>
+                    <stripDebug>true</stripDebug>
+                    <launcher>miapp</launcher>
+                    <mainClass>com.mypackage.NewMain</mainClass>
+                    <jlinkImageName>MiApp</jlinkImageName>
+                    <jlinkZipName>MiApp</jlinkZipName>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -126,11 +186,11 @@
                         <id>ide-profile</id>
                         <configuration>
                             <options>
-				<option>${profiler.jvmargs.arg1}</option>
-				<option>${profiler.jvmargs.arg2}</option>
-				<option>${profiler.jvmargs.arg3}</option>
-				<option>${profiler.jvmargs.arg4}</option>
-				<option>${profiler.jvmargs.arg5}</option>
+                                <option>${profiler.jvmargs.arg1}</option>
+                                <option>${profiler.jvmargs.arg2}</option>
+                                <option>${profiler.jvmargs.arg3}</option>
+                                <option>${profiler.jvmargs.arg4}</option>
+                                <option>${profiler.jvmargs.arg5}</option>
                             </options>
                         </configuration>
                     </execution>

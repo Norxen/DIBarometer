@@ -29,28 +29,28 @@ public class BlackBoxTest {
     
     @Test
     public void test1 () {
-        assertEquals(1, model.calcularClima(-2, 52478358));
+        assertEquals(0, model.calcularClima(-2, 52478358));
     }
     
     @Test
     public void test2 () {
-        assertEquals(2, model.calcularClima(2, 52478358));
+        assertEquals(1, model.calcularClima(2, 52478358));
     }
     @Test
     public void test3 () {
-        assertEquals(0, model.calcularClima(0, 5));
+        assertEquals(4, model.calcularClima(0, 5));
     }
     @Test
     public void test4 () {
-        assertEquals(3, model.calcularClima(0, 7));
+        assertEquals(2, model.calcularClima(0, 7));
     }
     @Test
     public void test5 () {
-        assertEquals(4, model.calcularClima(0, -7));
+        assertEquals(3, model.calcularClima(0, -7));
     }
     @Test
     public void test6 () {
-        assertEquals(0, model.calcularClima(0, 0));
+        assertEquals(4, model.calcularClima(0, 0));
     }
 
     

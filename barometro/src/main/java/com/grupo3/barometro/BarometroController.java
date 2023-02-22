@@ -142,7 +142,7 @@ public class BarometroController implements Initializable {
         progresBar.visibleProperty().bind(progresBar.progressProperty()
                 .isNotEqualTo(1, 0));
 
-        //}
+        
         //acutalizar el valor en labelAltura con sliderAltura, iniciamos el label en (0)
         labelAltura.setText("0");
         valorAltura.setText("Altura: 0");
@@ -187,16 +187,16 @@ public class BarometroController implements Initializable {
                 modelo.setHora(hora.getValue() + "");
                 modelo.setPresion(Double.parseDouble(texPrecision.getText()));
                 modelo.setAltura(sliderAltura.getValue());
-                
-                ObservableList<String> items = FXCollections.observableArrayList();
+                // sonarLint
+                ObservableList<String> localItems = FXCollections.observableArrayList();
                 modelo.addValueToList();
                 for (String item : modelo.getHistoricalValues()) {
-                    items.add(item);
+                    localItems.add(item);
                     
                 }
                 
-                historial.setItems(items);
-                System.out.println(modelo.getHv().size());
+                historial.setItems(localItems);
+              
                 
                 switch(modelo.actualizar()){
                     case 0:
@@ -335,8 +335,10 @@ public class BarometroController implements Initializable {
 
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException interrupted) {
-                }
+                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+               }
+
             }
             return iterations;
         }

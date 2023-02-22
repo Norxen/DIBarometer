@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HistoricalValue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barometro</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">HistoricalValue.java</span></div><h1>HistoricalValue.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package domain;
+
+import java.util.Objects;
+
+/**
+ *
+ * @author norxe
+ */
+<span class="nc" id="L13">public class HistoricalValue implements Comparable&lt;HistoricalValue&gt; {</span>
+    private String date;
+    private String hour;
+    private double pressure;
+
+    public String getDate() {
+<span class="nc" id="L19">        return date;</span>
+    }
+
+    public String getHour() {
+<span class="nc" id="L23">        return hour;</span>
+    }
+
+    public double getPressure() {
+<span class="nc" id="L27">        return pressure;</span>
+    }
+
+    public void setDate(String date) {
+<span class="nc" id="L31">        this.date = date;</span>
+<span class="nc" id="L32">    }</span>
+
+    public void setHour(String hour) {
+<span class="nc" id="L35">        this.hour = hour;</span>
+<span class="nc" id="L36">    }</span>
+
+    public void setPressure(double pressure) {
+<span class="nc" id="L39">        this.pressure = pressure;</span>
+<span class="nc" id="L40">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L44">        return date + &quot; &quot; + hour + &quot; &quot; + pressure;</span>
+    }
+
+    @Override
+    public int compareTo(HistoricalValue o) {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(date.compareTo(o.date) != 0) {</span>
+<span class="nc" id="L50">            return -1 * date.compareTo(o.date);</span>
+        }
+        
+<span class="nc" id="L53">        return hour.compareTo(o.hour);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L58">        int hash = 5;</span>
+<span class="nc" id="L59">        hash = 73 * hash + Objects.hashCode(this.date);</span>
+<span class="nc" id="L60">        hash = 73 * hash + Objects.hashCode(this.hour);</span>
+<span class="nc" id="L61">        return hash;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L67">            return true;</span>
+        }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L70">            return false;</span>
+        }
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L73">            return false;</span>
+        }
+<span class="nc" id="L75">        final HistoricalValue other = (HistoricalValue) obj;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (!Objects.equals(this.date, other.date)) {</span>
+<span class="nc" id="L77">            return false;</span>
+        }
+<span class="nc" id="L79">        return Objects.equals(this.hour, other.hour);</span>
+    }
+    
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
