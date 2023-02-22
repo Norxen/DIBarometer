@@ -26,16 +26,6 @@ public class BlackBoxTest {
     public void setUp() {
         model = new ModeloBarometro();
     }
-    /*
-                pdHOUR                  pdDAY               RESULTADO
-        1       -2                      ?                   1 (Lluvia)
-        2       2                       ?                   2 (MejoraPasajera)
-        3       0                       Contenido(-6, 6)    0 (Se mantiene)
-        4       Contenido (-1, 1)       7                   3 (Anticiclon)
-        5       Contenido (-1, 1)       -7                  4 (Borrasca pasa lejos)
-        6       Contenido (-1, 1)       Contenido(-6, 6)    0 Se mantiene
-    
-    */
     
     @Test
     public void test1 () {

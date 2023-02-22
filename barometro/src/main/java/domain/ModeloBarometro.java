@@ -103,41 +103,20 @@ public class ModeloBarometro {
      */
     public int actualizar() {
         int result = 0;
-        //1
+        HistoricalValue a = listaDeDatos.get(0);
+        HistoricalValue b = listaDeDatos.get(1);
+
         if(listaDeDatos.size() < 2) {
-            //F
             return -1;
         }
         
-        //3
-        HistoricalValue a = listaDeDatos.get(0);
-        HistoricalValue b = listaDeDatos.get(1);
-        
-        //4
-        if(isPreviousHour(b.getHour(), a.getHour())){
-            System.out.println(b.getPressure() - a.getPressure());
-            //4.a
-            if(b.getPressure() - a.getPressure() > 1) 
-                result = 1;
-            //4.b
-            else if(b.getPressure() - a.getPressure() < -1) 
-                result = 0;
-            //4.c
-            else 
-                result = 4;
-        }//5
-        else if(isPreviousDay(a.getDate())) {
-            //5.a
-            if(b.getPressure() - a.getPressure() >= 6) 
-                result = 2;
-            //5.b
-            else if(b.getPressure() - a.getPressure() <= -6) 
-                result = 3;
-            //5.c
-            else 
-                result = 4;
+        if(!isPreviousHour(b.getHour(), a.getHour()))
+        {
+            result = calcularClima(b.getPressure()-a.getPressure(), 0);
         }
-        //F
+        else if(isPreviousDay(a.getDate())) {
+            result = calcularClima(0, b.getPressure()-a.getPressure());
+        }
         return result;
     }
     
@@ -187,12 +166,12 @@ public class ModeloBarometro {
      */
     
     public int calcularClima(double pdHour, double pdDay) {
-        int value = 0;
+        int value = 4;
         
-        if(pdHour < -1) value = 1;
-        else if(pdHour > 1) value = 2;
-        else if(pdDay > 6) value = 3;
-        else if(pdDay < -6) value = 4;
+        if(pdHour < -1) value = 0;
+        else if(pdHour > 1) value = 1;
+        else if(pdDay > 6) value = 2;
+        else if(pdDay < -6) value = 3;
         
         return value;
     }
